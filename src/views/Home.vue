@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex justify-end">
+    <div class="flex justify-end p-2">
       <button @click="signout" class="p-1 bg-blue-500 font-bold text-white rounded-md">Signout</button>
     </div>
     <h1 class="text-center text-5xl text-blue-400">Todo List</h1>
