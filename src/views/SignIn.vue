@@ -20,6 +20,7 @@ export default {
   methods: {
     handleSubmit() {
       console.log("Hi, I ran")
+      this.$router.replace('/home');
     },
   },
 }
