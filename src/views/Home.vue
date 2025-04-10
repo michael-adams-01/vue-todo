@@ -1,6 +1,8 @@
 <template>
   <div>
-    <button @click="signout" class="p-1 bg-blue-500 font-bold text-white rounded-md">Signout</button>
+    <div class="flex justify-end">
+      <button @click="signout" class="p-1 bg-blue-500 font-bold text-white rounded-md">Signout</button>
+    </div>
     <h1 class="text-center text-5xl text-blue-400">Todo List</h1>
     <ul v-for="item in store.todos">
       <base-card class="flex justify-between">
