@@ -1,7 +1,8 @@
 <template>
   <div>
     <h1>UserAuth</h1>
-    <router-link class="bg-blue-400 text-white" to="/home">To Home</router-link>
+    <router-link class="p-1 bg-blue-500 font-bold text-white" to="/signin">Signin</router-link>
+    <router-link class="p-1 bg-blue-500 font-bold text-white" to="/signup">Signup</router-link>
   </div>
 </template>
 
