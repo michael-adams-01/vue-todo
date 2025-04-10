@@ -1,7 +1,6 @@
-<!-- J.M.J -->
 <template>
   <div>
-    <router-view></router-view>
+    <h1>Home</h1>
   </div>
 </template>
 
