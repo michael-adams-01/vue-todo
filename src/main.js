@@ -3,6 +3,7 @@ console.log("Crux sancta sit mihi lux Non draco sit mihi dux Vade retro satana N
 console.log('Sancte Ioseph, operarius, ora pro nobis');
 
 import './assets/main.css'
+import BaseCard from './components/ui/BaseCard.vue';
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -14,5 +15,6 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
+app.component('BaseCard', BaseCard);
 
 app.mount('#app')
