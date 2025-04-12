@@ -16,9 +16,10 @@
     <base-card class="flex justify-between">
       <div>
         <label for="">Add New Task: </label>
-        <input class="border bg-gray-100 w-75" type="text">
+        <input @focus="clearError" v-model.trim="newTaskInput" class="border bg-gray-100 w-75" type="text">
+        <h3 v-if="formisInvalid" class="font-bold text-red-500">Please add a task.</h3>
       </div>
-      <button class="text-white p-2 border rounded-lg bg-green-500" @click="deleteTodo">✔</button>
+      <button class="text-white p-2 border rounded-lg bg-green-500" @click="addTodo">✔</button>
     </base-card>
   </div>
 </template>
@@ -30,14 +31,41 @@ export default {
     const store = useTodoStore();
     return { store }
   },
+  data() {
+    return {
+      newTaskInput: '',
+      formisInvalid: false,
+    }
+  },
   methods: {
     signout() {
       this.store.userId = '',
         this.$router.replace('/auth');
     },
+    validateForm() {
+      if (this.newTaskInput === '') {
+        this.formisInvalid = true;
+      }
+    },
+    clearError() {
+      this.formisInvalid = false;
+    },
+    async addTodo() {
+      this.validateForm();
+
+      if (this.formisInvalid) {
+        console.log('error')
+      }
+
+
+      console.log(this.newTaskInput)
+      //fetch, post request.
+
+      //if succsessful push to local pinia*
+    },
     deleteTodo() {
       console.log('delete Todo ran')
-    }
+    },
   }
 }
 </script>
