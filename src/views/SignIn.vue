@@ -1,27 +1,123 @@
 <template>
-  <div class="flex items-center justify-center min-h-screen">
-    <div
-      class="flex flex-col p-6 m-3 space-y-10 bg-white rounded-2xl shadow-2xl md:flex-row md:space-y-0 md:space-x-10 md:m-0 m:p-16">
+  <div>
+    <base-card>
       <form @submit.prevent="handleSubmit" action="">
-        <label for="email">Email:</label>
-        <input class="border" type="email">
-        <br>
+        <label for="email">Email: </label>
+        <input @focus="clearError" v-model.trim="emailInput.val" class="border" type="email">
+        <h3 class="text-red-500" v-if="!emailInput.isValid">Invalid Email</h3>
 
-        <label for="password">Password</label>
-        <input class="border" type="text">
-        <button class="bg-blue-500 p-1 font-bold text-white rounded-md">Login</button>
+        <label for="password">Password: </label>
+        <input @focus="clearError" v-model.trim="passwordInput.val" class="border" type="password">
+        <h3 class="text-red-500" v-if="!passwordInput.isValid">Invalid Password</h3>
+        <br>
+        <div class="flex justify-between">
+          <router-link to="/signup" class="bg-blue-500 p-1 font-bold text-white rounded-md">Signup</router-link>
+          <button class="bg-blue-500 p-1 font-bold text-white rounded-md">Login</button>
+        </div>
       </form>
-    </div>
+    </base-card>
   </div>
 </template>
 
 <script>
+import { useTodoStore } from '../stores/todo.js';
 export default {
+  setup() {
+    const store = useTodoStore();
+    return { store }
+  },
+  data() {
+    return {
+      emailInput: {
+        val: '',
+        isValid: true,
+      },
+      passwordInput: {
+        val: '',
+        isValid: true,
+      },
+      formIsInvalid: false,
+    }
+  },
   methods: {
-    handleSubmit() {
-      console.log("Hi, I ran")
-      this.$router.replace('/home');
+    validateForm() {
+      if (!this.emailInput.val.includes('@')) {
+        this.emailInput.isValid = false;
+        this.formIsInvalid = true;
+      }
+      if (this.passwordInput.val.length < 6) {
+        this.passwordInput.isValid = false;
+        this.formIsInvalid = true;
+      }
+    },
+    async handleSubmit() {
+      this.validateForm();
+      if (this.formIsInvalid) {
+        console.log('Invalid form!')
+        return;
+      }
+
+      const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDTy5Gbh2mmANhPJfq38cNcarnHRFGfaEM',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: this.emailInput.val,
+            password: this.passwordInput.val,
+          })
+        })
+      const responseData = await response.json();
+      this.store.userId = responseData.localId
+
+      // if (response.ok) {
+      //   console.log("Response is ok")
+      // }
+
+      // console.log(this.emailInput.isValid)
+      // console.log(this.passwordInput.isValid)
+      //this.$router.replace('/home');
+    },
+    clearError() {
+      this.formIsInvalid = false;
+      this.emailInput.isValid = true;
+      this.passwordInput.isValid = true;
     },
   },
 }
 </script>
+
+
+<style scoped>
+form {
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.form-control {
+  margin: 0.5rem 0;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+input,
+textarea {
+  display: block;
+  width: 100%;
+  font: inherit;
+  border: 1px solid #ccc;
+  padding: 0.15rem;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #3d008d;
+  background-color: #faf6ff;
+  outline: none;
+}
+</style>
