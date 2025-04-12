@@ -71,6 +71,8 @@ export default {
       const responseData = await response.json();
       this.store.userId = responseData.localId
 
+      this.$router.replace('/home');
+
       // if (response.ok) {
       //   console.log("Response is ok")
       // }
