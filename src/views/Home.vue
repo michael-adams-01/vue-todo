@@ -32,7 +32,8 @@ export default {
   },
   methods: {
     signout() {
-      this.$router.replace('/auth');
+      this.store.userId = '',
+        this.$router.replace('/auth');
     },
     deleteTodo() {
       console.log('delete Todo ran')
