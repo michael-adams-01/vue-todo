@@ -74,7 +74,7 @@ export default {
       const responseData = await response.json();
       this.store.userId = responseData.localId
       this.isLoading = false
-      this.store.getTasks();
+      await this.store.getTasks();
       this.$router.replace('/home');
 
       // if (response.ok) {
