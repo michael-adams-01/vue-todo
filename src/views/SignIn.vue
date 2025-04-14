@@ -12,7 +12,8 @@
         <br>
         <div class="flex justify-between">
           <router-link to="/signup" class="bg-blue-500 p-1 font-bold text-white rounded-md">Signup</router-link>
-          <button class="bg-blue-500 p-1 font-bold text-white rounded-md">Login</button>
+          <button v-if="!isLoading" class="bg-blue-500 p-1 font-bold text-white rounded-md">Login</button>
+          <button v-else class="animate-pulse bg-blue-500 p-1 font-bold text-white rounded-md">Login</button>
         </div>
       </form>
     </base-card>
@@ -37,6 +38,7 @@ export default {
         isValid: true,
       },
       formIsInvalid: false,
+      isLoading: false,
     }
   },
   methods: {
@@ -57,6 +59,7 @@ export default {
         return;
       }
 
+      this.isLoading = true
       const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDTy5Gbh2mmANhPJfq38cNcarnHRFGfaEM',
         {
           method: 'POST',
@@ -70,7 +73,8 @@ export default {
         })
       const responseData = await response.json();
       this.store.userId = responseData.localId
-
+      this.isLoading = false
+      this.store.getTasks();
       this.$router.replace('/home');
 
       // if (response.ok) {
