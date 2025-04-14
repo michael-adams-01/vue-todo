@@ -11,7 +11,6 @@ export const useTodoStore = defineStore('todo', {
     async getTasks() {
       const response = await fetch(`https://vuetodo-26a3c-default-rtdb.firebaseio.com/${this.userId}.json`)
       const responseData = await response.json();
-      console.log(responseData)
 
       const todos = [];
 

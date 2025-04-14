@@ -6,7 +6,7 @@
     <h1 class="text-center text-5xl text-blue-400">Todo List</h1>
     <ul v-for="item in store.todos">
       <base-card class="flex justify-between">
-        <li>Title: {{ item.title }}</li>
+        <li> {{ item.title }}</li>
         <button class="text-white p-2 border rounded-lg bg-red-500" @click="deleteTodo">X</button>
         <!-- <li>Completed: {{ item.completed }}</li> -->
         <!-- <li>Due Date: {{ item.dueDate }}</li> -->
@@ -57,11 +57,15 @@ export default {
         console.log('error')
       }
 
+      await fetch(`https://vuetodo-26a3c-default-rtdb.firebaseio.com/${this.store.userId}.json`, {
+        method: 'POST',
+        body: JSON.stringify({
+          task: this.newTaskInput,
+        })
+      })
 
-      console.log(this.newTaskInput)
-      //fetch, post request.
-
-      //if succsessful push to local pinia*
+      this.store.getTasks();
+      this.newTaskInput = '';
     },
     deleteTodo() {
       console.log('delete Todo ran')
