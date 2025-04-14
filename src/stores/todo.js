@@ -16,7 +16,8 @@ export const useTodoStore = defineStore('todo', {
 
       for (const key in responseData) {
         const todo = {
-          title: responseData[key].task
+          id: key,
+          title: responseData[key].task,
         }
         todos.push(todo);
       }
