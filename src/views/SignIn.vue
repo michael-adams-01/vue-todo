@@ -1,6 +1,7 @@
 <template>
   <div>
     <base-card>
+      <h1 class="font-bold text-center text-3xl">Sign In</h1>
       <form @submit.prevent="handleSubmit" action="">
         <label for="email">Email: </label>
         <input @focus="clearError" v-model.trim="emailInput.val" class="border" type="email">
