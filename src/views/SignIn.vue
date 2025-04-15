@@ -16,6 +16,8 @@
           <button v-else class="animate-pulse bg-blue-500 p-1 font-bold text-white rounded-md">Login</button>
         </div>
       </form>
+      <base-spinner v-if="isLoading"></base-spinner>
+      <h3 v-if="!!errorMessage" class="font-bold text-red-500">Error: {{ errorMessage }}</h3>
     </base-card>
   </div>
 </template>
@@ -39,6 +41,7 @@ export default {
       },
       formIsInvalid: false,
       isLoading: false,
+      errorMessage: '',
     }
   },
   methods: {
@@ -59,27 +62,42 @@ export default {
         return;
       }
 
-      this.isLoading = true
-      const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDTy5Gbh2mmANhPJfq38cNcarnHRFGfaEM',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: this.emailInput.val,
-            password: this.passwordInput.val,
+      try {
+
+        this.isLoading = true
+        const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDTy5Gbh2mmANhPJfq38cNcarnHRFGfaEM',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: this.emailInput.val,
+              password: this.passwordInput.val,
+            })
           })
-        })
-      const responseData = await response.json();
-      this.store.userId = responseData.localId
+
+        const responseData = await response.json();
+        this.store.userId = responseData.localId
+
+        if (!response.ok) {
+          console.log("Response is not ok")
+          this.isLoading = false;
+          const error = new Error(responseData.error.message || 'Failed to sign in')
+          this.errorMessage = error
+          return;
+        }
+
+      } catch (error) {
+        console.log('There was an error: ', error)
+        this.errorMessage = error.message;
+        this.isLoading = false;
+        return;
+      }
       this.isLoading = false
       await this.store.getTasks();
       this.$router.replace('/home');
 
-      // if (response.ok) {
-      //   console.log("Response is ok")
-      // }
 
       // console.log(this.emailInput.isValid)
       // console.log(this.passwordInput.isValid)
