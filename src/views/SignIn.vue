@@ -18,7 +18,7 @@
         </div>
       </form>
       <base-spinner v-if="isLoading"></base-spinner>
-      <h3 v-if="!!errorMessage" class="font-bold text-red-500">Error: {{ errorMessage }}</h3>
+      <h3 v-if="!!errorMessage" class="font-bold text-red-500">{{ errorMessage }}</h3>
     </base-card>
   </div>
 </template>
@@ -98,11 +98,6 @@ export default {
       this.isLoading = false
       await this.store.getTasks();
       this.$router.replace('/home');
-
-
-      // console.log(this.emailInput.isValid)
-      // console.log(this.passwordInput.isValid)
-      //this.$router.replace('/home');
     },
     clearError() {
       this.formIsInvalid = false;

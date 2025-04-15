@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div
-      class="flex flex-col p-6 m-3 space-y-10 bg-white rounded-2xl shadow-2xl md:flex-row md:space-y-0 md:space-x-10 md:m-0 m:p-16">
+    <base-card>
+      <h1 class="font-bold text-center text-3xl">Sign Up</h1>
       <form @submit.prevent="handleSubmit">
         <label for="email">Email: </label>
         <input @focus="clearError" v-model.trim="enteredEmail.val" class="border" type="email">
@@ -15,10 +15,9 @@
           <button class="bg-blue-500 p-1 font-bold text-white rounded-md">Signup</button>
         </div>
       </form>
-    </div>
-    <h1>{{ enteredEmail }}</h1>
-    <h1>{{ enteredPassword }}</h1>
-    <h1>{{ formisInvalid }}</h1>
+      <base-spinner v-if="isLoading"></base-spinner>
+      <h3 v-if="!!errorMessage" class="font-bold text-red-500">{{ errorMessage }}</h3>
+    </base-card>
   </div>
 </template>
 
@@ -40,6 +39,8 @@ export default {
         isValid: true,
       },
       formisInvalid: false,
+      isLoading: false,
+      errorMessage: '',
     }
   },
   methods: {
@@ -65,23 +66,40 @@ export default {
         return;
       }
 
-      const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDTy5Gbh2mmANhPJfq38cNcarnHRFGfaEM',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: this.enteredEmail.val,
-            password: this.enteredPassword.val,
+      try {
+
+        this.isLoading = true;
+        const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDTy5Gbh2mmANhPJfq38cNcarnHRFGfaEM',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: this.enteredEmail.val,
+              password: this.enteredPassword.val,
+            })
           })
-        })
 
-      const responseData = await response.json();
-      this.store.userId = responseData.localId
+        const responseData = await response.json();
+        this.store.userId = responseData.localId
 
-      console.log(responseData)
+        if (!response.ok) {
+          console.log("Response is not ok")
+          this.isLoading = false;
+          const error = new Error(responseData.error.message || 'There was an error signing up. Please try again')
+          this.errorMessage = error;
+          return;
+        }
 
+      } catch (error) {
+        console.log("There was an error", error)
+        this.errorMessage = error;
+        this.isLoading = false;
+        return;
+      }
+
+      this.isLoading = false;
       this.$router.replace('/home');
     },
   },
