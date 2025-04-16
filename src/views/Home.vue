@@ -21,6 +21,7 @@
       </div>
       <button class="text-white p-2 border rounded-lg bg-green-500" @click="addTodo">✔</button>
     </base-card>
+    <h3 v-if="!!store.errorMessage" class="font-bold text-red-500">{{ store.errorMessage }}</h3>
   </div>
 </template>
 
@@ -74,6 +75,6 @@ export default {
         })
       this.store.getTasks();
     },
-  }
+  },
 }
 </script>

@@ -19,6 +19,7 @@
       </form>
       <base-spinner v-if="isLoading"></base-spinner>
       <h3 v-if="!!errorMessage" class="font-bold text-red-500">{{ errorMessage }}</h3>
+      <h3 v-if="!!errorMessage" class="font-bold text-red-500">{{ store.errorMessage }}</h3>
     </base-card>
   </div>
 </template>
