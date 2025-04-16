@@ -41,7 +41,7 @@ export default {
   methods: {
     signout() {
       this.store.userId = '',
-        this.$router.replace('/auth');
+        this.$router.replace('/signin');
     },
     validateForm() {
       if (this.newTaskInput === '') {

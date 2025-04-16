@@ -11,8 +11,10 @@
         <h3 class="font-bold text-red-500" v-if="!enteredPassword.isValid">Password is invalid</h3>
         <br>
         <div class="flex justify-between">
-          <router-link to="/signin" class="bg-blue-500 p-1 font-bold text-white rounded-md">Sign in</router-link>
-          <button class="bg-blue-500 p-1 font-bold text-white rounded-md">Signup</button>
+          <button class="hover:scale-95 bg-blue-500 p-1 font-bold text-white rounded-md">Signup</button>
+          <router-link to="/signin"
+            class="p-1 font-bold text-black rounded-md hover:scale-95 hover:rounded-md hover:bg-blue-200">Sign
+            in</router-link>
         </div>
       </form>
       <base-spinner v-if="isLoading"></base-spinner>
