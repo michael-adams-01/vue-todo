@@ -16,7 +16,17 @@
         </div>
       </form>
       <base-spinner v-if="isLoading"></base-spinner>
-      <h3 v-if="!!errorMessage" class="font-bold text-red-500">{{ errorMessage }}</h3>
+      <!-- <h3 v-if="!!store.errorMessage" class="font-bold text-red-500">{{ store.errorMessage }}</h3> -->
+      <!-- <base-modal :open="!!store.errorMessage"> -->
+      <!--   <h1 class="font-bold text-red-500">{{ store.errorMessage }}</h1> -->
+      <!--   <button class="border rounded-lg bg-blue-400 font-bold text-white p-1 m-1" -->
+      <!--     @click="store.errorMessage = ''">Close</button> -->
+      <!-- </base-modal> -->
+      <base-modal :open="!!store.errorMessage">
+        <h1 class="font-bold text-red-500">{{ store.errorMessage }}</h1>
+        <button @click="store.errorMessage = null"
+          class="border rounded-lg bg-blue-400 font-bold text-white p-1 m-1">Close</button>
+      </base-modal>
     </base-card>
   </div>
 </template>
@@ -40,7 +50,6 @@ export default {
       },
       formisInvalid: false,
       isLoading: false,
-      errorMessage: '',
     }
   },
   methods: {
@@ -88,13 +97,13 @@ export default {
           console.log("Response is not ok")
           this.isLoading = false;
           const error = new Error(responseData.error.message || 'There was an error signing up. Please try again')
-          this.errorMessage = error;
+          this.store.errorMessage = error;
           return;
         }
 
       } catch (error) {
         console.log("There was an error", error)
-        this.errorMessage = error;
+        this.store.errorMessage = error;
         this.isLoading = false;
         return;
       }
