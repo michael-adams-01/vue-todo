@@ -18,7 +18,11 @@
         </div>
       </form>
       <base-spinner v-if="isLoading"></base-spinner>
-      <h3 v-if="!!errorMessage" class="font-bold text-red-500">{{ errorMessage }}</h3>
+      <base-modal :open="!!store.errorMessage">
+        <h1 class="font-bold text-red-500">{{ store.errorMessage }}</h1>
+        <button class="border rounded-lg bg-blue-400 font-bold text-white p-1 m-1"
+          @click="store.errorMessage = ''">Close</button>
+      </base-modal>
       <h3 v-if="!!errorMessage" class="font-bold text-red-500">{{ store.errorMessage }}</h3>
     </base-card>
   </div>
@@ -43,7 +47,6 @@ export default {
       },
       formIsInvalid: false,
       isLoading: false,
-      errorMessage: '',
     }
   },
   methods: {
@@ -86,13 +89,13 @@ export default {
           console.log("Response is not ok")
           this.isLoading = false;
           const error = new Error(responseData.error.message || 'Failed to sign in')
-          this.errorMessage = error
+          this.store.errorMessage = error
           return;
         }
 
       } catch (error) {
         console.log('There was an error: ', error)
-        this.errorMessage = error.message;
+        this.store.errorMessage = error.message;
         this.isLoading = false;
         return;
       }
