@@ -4,15 +4,16 @@
       <button @click="signout" class="p-1 bg-blue-500 font-bold text-white rounded-md">Signout</button>
     </div>
     <h1 class="text-center text-5xl text-blue-400">Todo List</h1>
-    <ul v-for="item in store.todos">
-      <base-card class="flex justify-between">
-        <li> {{ item.title }}</li>
-        <button class="text-white p-2 border rounded-lg bg-red-500" @click="deleteTodo(item.id)">X</button>
-        <!-- <li>Completed: {{ item.completed }}</li> -->
-        <!-- <li>Due Date: {{ item.dueDate }}</li> -->
-        <!-- <li>Priority: {{ item.priority }}</li> -->
-      </base-card>
-    </ul>
+
+    <draggable @mouseup="console.log('mouseup')" v-model="store.todos" tag="ul">
+      <template #item="{ element: item }">
+        <base-card class="flex justify-between">
+          <li> {{ item.title }}</li>
+          <button class="text-white p-2 border rounded-lg bg-red-500" @click="deleteTodo(item.id)">X</button>
+        </base-card>
+      </template>
+    </draggable>
+
     <base-card class="flex justify-between">
       <div>
         <label for="">Add New Task: </label>
@@ -26,8 +27,12 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable';
 import { useTodoStore } from '../stores/todo.js';
 export default {
+  components: {
+    draggable
+  },
   setup() {
     const store = useTodoStore();
     return { store }
