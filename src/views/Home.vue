@@ -14,6 +14,8 @@
       </template>
     </draggable>
 
+    <base-spinner v-if="store.isLoading"></base-spinner>
+
     <base-card class="flex justify-between">
       <div>
         <label for="">Add New Task: </label>
@@ -80,6 +82,17 @@ export default {
         })
       this.store.getTasks();
     },
+  },
+  beforeMount() {
+    if (localStorage.getItem('userId')) {
+      console.log('There is a user in localStorage and their id is: ', localStorage.getItem('userId'))
+      this.store.userId = localStorage.getItem('userId')
+      this.store.isLoading = true;
+      this.store.getTasks();
+      this.store.isLoading = false;
+    } else {
+      console.log('There is not a user in localStorage')
+    }
   },
 }
 </script>

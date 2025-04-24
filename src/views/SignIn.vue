@@ -85,6 +85,7 @@ export default {
 
         const responseData = await response.json();
         this.store.userId = responseData.localId
+        localStorage.setItem('userId', responseData.localId);
 
         if (!response.ok) {
           console.log("Response is not ok")

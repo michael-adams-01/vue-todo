@@ -6,6 +6,7 @@ export const useTodoStore = defineStore('todo', {
     todos: [
     ],
     errorMessage: null,
+    isLoading: false,
 
   }),
   actions: {
