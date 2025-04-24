@@ -48,7 +48,8 @@ export default {
   methods: {
     signout() {
       this.store.userId = '',
-        this.$router.replace('/signin');
+        localStorage.removeItem('userId')
+      this.$router.replace('/signin');
     },
     validateForm() {
       if (this.newTaskInput === '') {
