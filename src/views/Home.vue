@@ -5,10 +5,10 @@
     </div>
     <h1 class="text-center text-5xl text-blue-400">Todo List</h1>
 
-    <draggable @end="store.updateTasks" @mouseup="console.log('mouseup')" v-model="store.todos" tag="ul">
+    <draggable @end="store.updateTasks" v-model="store.todos" tag="ul">
       <template #item="{ element: item }">
         <base-card class="flex justify-between">
-          <li> {{ item }}</li>
+          <li> {{ item.task }}</li>
           <button class="text-white p-2 border rounded-lg bg-red-500" @click="deleteTodo(item.id)">X</button>
         </base-card>
       </template>
@@ -59,23 +59,6 @@ export default {
     clearError() {
       this.formisInvalid = false;
     },
-    // async addTodo() {
-    //   this.validateForm();
-
-    //   if (this.formisInvalid) {
-    //     console.log('error')
-    //   }
-
-    //   await fetch(`https://vuetodo-26a3c-default-rtdb.firebaseio.com/${this.store.userId}.json`, {
-    //     method: 'POST',
-    //     body: JSON.stringify({
-    //       task: this.newTaskInput,
-    //     })
-    //   })
-
-    //   this.store.getTasks();
-    //   this.newTaskInput = '';
-    // },
     async addTodo() {
       this.validateForm();
 
@@ -83,18 +66,18 @@ export default {
         return;
       }
 
-      this.store.todos.push(this.newTaskInput)
+      const taskId = Math.floor(Math.random() * 50000) + 1;
+      this.store.todos.push({
+        id: taskId,
+        task: this.newTaskInput
+      })
       this.store.updateTasks()
 
 
     },
     async deleteTodo(id) {
-      await fetch(`https://vuetodo-26a3c-default-rtdb.firebaseio.com/${this.store.userId}/${id}.json`,
-        {
-          method: 'DELETE'
-        })
-      this.store.getTasks();
-    },
+      this.store.removeTodo(id)
+    }
   },
   beforeMount() {
     this.getTasks

@@ -12,34 +12,6 @@ export const useTodoStore = defineStore('todo', {
 
   }),
   actions: {
-    // async getTasks() {
-    //   try {
-    //     const response = await fetch(`https://vuetodo-26a3c-default-rtdb.firebaseio.com/${this.userId}.json`)
-    //     const responseData = await response.json();
-
-    //     if (!response.ok) {
-    //       const error = new Error(responseData.error.message || responseData.error || 'Failed to fetch data')
-    //       this.errorMessage = 'there was an error'
-    //       this.errorMessage = error;
-    //       return;
-
-    //     }
-    //     const todos = [];
-
-    //     for (const key in responseData) {
-    //       const todo = {
-    //         id: key,
-    //         title: responseData[key].task,
-    //       }
-    //       todos.push(todo);
-    //     }
-    //     this.todos = todos
-    //   } catch (error) {
-    //     console.log(error)
-    //     this.errorMessage = error;
-    //   }
-
-    // }
     async getTasks() {
       this.isLoading = true;
       const querySnapshot = await getDocs(collection(db, this.userId));
@@ -56,10 +28,13 @@ export const useTodoStore = defineStore('todo', {
         await setDoc(doc(db, this.userId, 'todos'), {
           todo: this.todos
         })
-        console.log('updated')
       } else {
         console.log("Error fetching data: User not logged in.")
       }
     },
+    removeTodo(id) {
+      this.todos = this.todos.filter(todo => todo.id !== id)
+      this.updateTasks()
+    }
   }
 })
