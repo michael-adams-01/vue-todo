@@ -41,6 +41,7 @@ export const useTodoStore = defineStore('todo', {
 
     // }
     async getTasks() {
+      this.isLoading = true;
       const querySnapshot = await getDocs(collection(db, this.userId));
       let fireBaseTodos = []
       querySnapshot.forEach((doc) => {
@@ -48,12 +49,14 @@ export const useTodoStore = defineStore('todo', {
         fireBaseTodos.push(...todo)
       });
       this.todos = fireBaseTodos
+      this.isLoading = false;
     },
     async updateTasks() {
       if (this.userId) {
         await setDoc(doc(db, this.userId, 'todos'), {
           todo: this.todos
         })
+        console.log('updated')
       } else {
         console.log("Error fetching data: User not logged in.")
       }

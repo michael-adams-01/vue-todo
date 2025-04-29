@@ -59,22 +59,34 @@ export default {
     clearError() {
       this.formisInvalid = false;
     },
+    // async addTodo() {
+    //   this.validateForm();
+
+    //   if (this.formisInvalid) {
+    //     console.log('error')
+    //   }
+
+    //   await fetch(`https://vuetodo-26a3c-default-rtdb.firebaseio.com/${this.store.userId}.json`, {
+    //     method: 'POST',
+    //     body: JSON.stringify({
+    //       task: this.newTaskInput,
+    //     })
+    //   })
+
+    //   this.store.getTasks();
+    //   this.newTaskInput = '';
+    // },
     async addTodo() {
       this.validateForm();
 
       if (this.formisInvalid) {
-        console.log('error')
+        return;
       }
 
-      await fetch(`https://vuetodo-26a3c-default-rtdb.firebaseio.com/${this.store.userId}.json`, {
-        method: 'POST',
-        body: JSON.stringify({
-          task: this.newTaskInput,
-        })
-      })
+      this.store.todos.push(this.newTaskInput)
+      this.store.updateTasks()
 
-      this.store.getTasks();
-      this.newTaskInput = '';
+
     },
     async deleteTodo(id) {
       await fetch(`https://vuetodo-26a3c-default-rtdb.firebaseio.com/${this.store.userId}/${id}.json`,
