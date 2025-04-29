@@ -5,10 +5,10 @@
     </div>
     <h1 class="text-center text-5xl text-blue-400">Todo List</h1>
 
-    <draggable @mouseup="console.log('mouseup')" v-model="store.todos" tag="ul">
+    <draggable @end="store.updateTasks" @mouseup="console.log('mouseup')" v-model="store.todos" tag="ul">
       <template #item="{ element: item }">
         <base-card class="flex justify-between">
-          <li> {{ item.title }}</li>
+          <li> {{ item }}</li>
           <button class="text-white p-2 border rounded-lg bg-red-500" @click="deleteTodo(item.id)">X</button>
         </base-card>
       </template>
@@ -85,6 +85,7 @@ export default {
     },
   },
   beforeMount() {
+    this.getTasks
     if (localStorage.getItem('userId')) {
       console.log('There is a user in localStorage and their id is: ', localStorage.getItem('userId'))
       this.store.userId = localStorage.getItem('userId')
