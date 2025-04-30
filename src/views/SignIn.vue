@@ -5,11 +5,11 @@
       <form @submit.prevent="handleSubmit" action="">
         <label for="email">Email: </label>
         <input @focus="clearError" v-model.trim="emailInput.val" class="border" type="email">
-        <h3 class="text-red-500" v-if="!emailInput.isValid">Invalid Email</h3>
+        <h3 class="text-red-500" v-if="!emailInput.isValid">Please enter a valid email</h3>
 
         <label for="password">Password: </label>
         <input @focus="clearError" v-model.trim="passwordInput.val" class="border" type="password">
-        <h3 class="text-red-500" v-if="!passwordInput.isValid">Invalid Password</h3>
+        <h3 class="text-red-500" v-if="!passwordInput.isValid">Please enter a valid password</h3>
         <br>
         <div class="flex justify-between">
           <button v-if="!isLoading" class="hover:scale-95 bg-blue-500 p-1 font-bold text-white rounded-md">Login</button>

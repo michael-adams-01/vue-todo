@@ -5,10 +5,11 @@
       <form @submit.prevent="handleSubmit">
         <label for="email">Email: </label>
         <input @focus="clearError" v-model.trim="enteredEmail.val" class="border" type="email">
-        <h3 class="font-bold text-red-500" v-if="!enteredEmail.isValid">Email is invalid</h3>
+        <h3 class="font-bold text-red-500" v-if="!enteredEmail.isValid">Please enter a valid email</h3>
         <label for="password">Password: </label>
         <input @focus="clearError" v-model.trim="enteredPassword.val" class="border" type="password">
-        <h3 class="font-bold text-red-500" v-if="!enteredPassword.isValid">Password is invalid</h3>
+        <h3 class="font-bold text-red-500" v-if="!enteredPassword.isValid">Password must be at least
+          six characters</h3>
         <br>
         <div class="flex justify-between">
           <button class="hover:scale-95 bg-blue-500 p-1 font-bold text-white rounded-md">Signup</button>
@@ -94,6 +95,7 @@ export default {
 
         const responseData = await response.json();
         this.store.userId = responseData.localId
+        localStorage.setItem('userId', responseData.localId);
 
         if (!response.ok) {
           console.log("Response is not ok")
