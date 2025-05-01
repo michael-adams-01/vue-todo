@@ -4,6 +4,8 @@
       <button @click="signout" class="p-1 bg-blue-500 font-bold text-white rounded-md">Signout</button>
     </div>
     <h1 class="text-center text-5xl text-blue-400">Todo List</h1>
+    <br>
+    <h3 class="text-center font-bold text-gray-800">Tasks can be reordered with drag and dropped. Try it out!</h3>
 
     <draggable @end="store.updateTasks" v-model="store.todos" tag="ul">
       <template #item="{ element: item }">
@@ -72,6 +74,7 @@ export default {
         task: this.newTaskInput
       })
       this.store.updateTasks()
+      this.newTaskInput = ''
 
 
     },
